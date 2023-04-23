@@ -1,0 +1,1 @@
+rootProject.name = "kz.qazaqshacontent.qazaqsha-backend"
