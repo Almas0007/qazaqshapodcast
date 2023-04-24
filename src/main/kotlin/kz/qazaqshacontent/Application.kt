@@ -10,12 +10,12 @@ import org.jetbrains.exposed.sql.Database
 
 fun main() {
     Database.connect(
-        "jdbc:postgresql://localhost:5432/qazaqshadb",
+        "jdbc:postgresql://postgres:6FWdfpSCXIOE34Hvb0GH@containers-us-west-182.railway.app:5641/railway",
         driver = "org.postgresql.Driver",
         "postgres",
-        "Utepov2020"
+        "6FWdfpSCXIOE34Hvb0GH"
     )
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
+    embeddedServer(Netty, port = 5641, host = "containers-us-west-182.railway.app", module = Application::module)
         .start(wait = true)
 }
 
