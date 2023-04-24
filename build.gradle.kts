@@ -3,6 +3,7 @@ val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
 val postgresql_version: String by project
+val hikariVersion: String by project
 
 plugins {
     kotlin("jvm") version "1.8.20"
@@ -26,7 +27,7 @@ repositories {
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
@@ -41,4 +42,11 @@ dependencies {
 
     // PostgreSql
     implementation("org.postgresql:postgresql:$postgresql_version")
+
+    // Hikari
+    implementation("com.zaxxer:HikariCP:$hikariVersion")
+}
+
+tasks {
+    create("stage").dependsOn("installDist")
 }
