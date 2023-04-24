@@ -12,10 +12,10 @@ fun main() {
     Database.connect(
         "jdbc:postgresql://postgres:6FWdfpSCXIOE34Hvb0GH@containers-us-west-182.railway.app:5641/railway",
         driver = "org.postgresql.Driver",
-        "railway",
+        "postgres",
         "6FWdfpSCXIOE34Hvb0GH"
     )
-    embeddedServer(Netty, port = 5641, host = "containers-us-west-182.railway.app", module = Application::module)
+    embeddedServer(Netty, port = 5641, module = Application::module)
         .start(wait = true)
 }
 
