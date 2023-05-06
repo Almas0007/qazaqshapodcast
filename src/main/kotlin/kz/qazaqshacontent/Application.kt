@@ -5,10 +5,12 @@ import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.utils.io.*
 import kz.qazaqshacontent.features.channel.configureRoutingChannels
 import kz.qazaqshacontent.features.video.configureVideosRouting
 import kz.qazaqshacontent.plugins.*
 import org.jetbrains.exposed.sql.Database
+import java.sql.SQLException
 
 fun main() {
 
@@ -20,8 +22,8 @@ fun main() {
 //        "postgres",
 //        "6FWdfpSCXIOE34Hvb0GH"
 //    )
-//    embeddedServer(Netty, port = 5641, host = "0.0.0.0", module = Application::module)
-//        .start(wait = true)
+    embeddedServer(Netty, port = 5641, host = "121.1.1.10", module = Application::module)
+        .start(wait = true)
 }
 
 fun Application.module() {
@@ -35,16 +37,20 @@ fun Application.module() {
 
 private fun createDataSource(): HikariDataSource {
     val config = HikariConfig()
-
     config.apply {
+        jdbcUrl = "jdbc:postgresql://containers-us-west-182.railway.app:5641/railway"
         password = "6FWdfpSCXIOE34Hvb0GH"
         username = "postgres"
-        jdbcUrl = "jdbc:postgresql://containers-us-west-182.railway.app:5641/railway"
         driverClassName = "org.postgresql.Driver"
-        maximumPoolSize = 3
+        maximumPoolSize = 10
         isAutoCommit = true
-        transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-        validate()
     }
-    return HikariDataSource(config)
+    val dataSource = HikariDataSource(config)
+
+    try {
+        Database.connect(dataSource)
+    } catch (e: SQLException) {
+        throw RuntimeException("Unable to connect to database", e)
+    }
+    return dataSource
 }
